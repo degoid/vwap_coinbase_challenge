@@ -1,0 +1,2 @@
+websocket-client==1.2.3
+kafka-python==2.0.2
