@@ -29,19 +29,22 @@ class ProducerHandler:
             self.brokers.append(broker_map)
 
     @staticmethod
-    def _create_producer(address):
+    def _create_kafka_producer(address: str):
+        return KafkaProducer(bootstrap_servers=address, client_id=CLIENT_ID)
+
+    def _create_producer(self, address):
         connected = False
         retries = 0
         producer = None
 
         while not connected and retries < MAX_RETRIES:
-            producer = KafkaProducer(bootstrap_servers=address, client_id=CLIENT_ID)
+            producer = self._create_kafka_producer(address)
 
             connected = (producer is not None) and producer.bootstrap_connected()
 
             if not connected:
                 retries = retries + 1
-                logging.warning("Producer is not ready, waiting 10s")
+                logging.warning(f"Producer is not ready, waiting {TIME_TO_WAIT}s")
                 sleep(TIME_TO_WAIT)
 
         if retries == MAX_RETRIES:
@@ -64,5 +67,5 @@ class ProducerHandler:
             producer.send(f"{product_id}", f"{vwap}".encode('utf-8'))
             return
 
-        logging.error(f"Kafka producer is not defined for product {product_id}")
+        raise KafkaError(f"Kafka producer is not defined for product {product_id}")
 

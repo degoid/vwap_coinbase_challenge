@@ -21,7 +21,7 @@ class WeightedAverageProduct:
         value = Decimal(0)
         weight = Decimal(0)
 
-        if len(self.weighted_list) == self.size:
+        if len(self.weighted_list) == self.size and self.size > 0:
             value = self.weighted_list[0]
             self.weighted_list = self.weighted_list[1:]
 
@@ -38,12 +38,16 @@ class WeightedAverageProduct:
         return new_entry
 
     def update(self, value: Decimal, new_weight: Decimal):
-        old_weighted_value, old_weight = self._remove_old_values()
-        new_weighted_value = self._add_new_weighted_value(value, new_weight)
+        if self.size > 0:
+            old_weighted_value, old_weight = self._remove_old_values()
+            new_weighted_value = self._add_new_weighted_value(value, new_weight)
 
-        # Delete old values and add the newest elements to the total [optimization to avoid iteration over all values]
-        self._sum_values = self._sum_values - old_weighted_value + new_weighted_value
-        self._sum_weight = self._sum_weight - old_weight + new_weight
+            # Delete old values; add the newest elements to the total [optimization to avoid iteration over all values]
+            self._sum_values = self._sum_values - old_weighted_value + new_weighted_value
+            self._sum_weight = self._sum_weight - old_weight + new_weight
 
     def avg(self):
-        return self._sum_values / self._sum_weight
+        if self._sum_weight > 0:
+            return self._sum_values / self._sum_weight
+
+        return 0

@@ -7,5 +7,5 @@
     "broker_2:9093": ["BTC-USD"]
   },
   "log_level": "info",
-  "kafka_time": 15
+  "kafka_time": 30
 }

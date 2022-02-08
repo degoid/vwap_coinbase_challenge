@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  producer:
-    container_name: producer
+  coinbase:
+    container_name: listener-wmq
     build: .
     environment:
       - CONFIG_FILE=./app/config/setup_mq.json

@@ -1,2 +1,4 @@
 websocket-client==1.2.3
 kafka-python==2.0.2
+pytest==7.0.0
+pytest-cov==3.0.0

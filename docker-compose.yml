@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   coinbase:
-    container_name: producer
+    container_name: listener
     build: .
     environment:
       - CONFIG_FILE=./app/config/setup_no_mq.json
