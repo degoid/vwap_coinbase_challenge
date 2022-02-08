@@ -4,6 +4,6 @@ COPY . /app
 RUN echo 'Installing requirements...'
 RUN pip install -r /app/setup/requirements.txt
 
-ENTRYPOINT /app/setup/startup.sh
+RUN python /app/main.py
 
 EXPOSE 4000
