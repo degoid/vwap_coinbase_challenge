@@ -10,12 +10,12 @@ from src.products.calculator import VWAPCalculator
 
 class Configuration:
     def __init__(self, config: dict):
-        self.max_size = config["max_size"]
-        self.brokers = config["brokers"]
-        self.coinbase_url = config["coinbase_url"]
-        self.log_level = config["log_level"]
-        self.products = config["products"]
-        self.kafka_time = config["kafka_time"]
+        self.max_size = config.get("max_size")
+        self.brokers = config.get("brokers", None)
+        self.coinbase_url = config.get("coinbase_url")
+        self.log_level = config.get("log_level")
+        self.products = config.get("products")
+        self.kafka_time = config.get("kafka_time", None)
 
 
 class ConfigurationHandler:
