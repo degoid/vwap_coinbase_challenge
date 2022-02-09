@@ -1,0 +1,11 @@
+{
+  "coinbase_url": "wss://url",
+  "max_size": 20,
+  "products": ["p1", "p2", "p3"],
+  "brokers": {
+    "b1": ["p1", "p2"],
+    "b2": ["p3"]
+  },
+  "log_level": "info",
+  "kafka_time": 1
+}

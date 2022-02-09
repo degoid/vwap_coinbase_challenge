@@ -1,0 +1,9 @@
+{
+  "coinbase_url": "",
+  "max_size": 20,
+  "products": [],
+  "brokers": {
+  },
+  "log_level": "bad",
+  "kafka_time": 1
+}

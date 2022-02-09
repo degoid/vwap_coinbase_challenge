@@ -1,31 +1,52 @@
 import logging
 import os
+from typing import Optional
 
-from src.clients.producer import ProducerClient
+from src.handlers.coinbase import CoinBaseHandler
 from src.handlers.configuration import ConfigurationHandler
+from src.handlers.kafka import ProducerHandler
+from src.products.calculator import VWAPCalculator
+from src.products.product import Product
+from src.utils.config_utils import get_configuration
 
 
-def get_configuration() -> ConfigurationHandler:
-    config_file = os.environ.get('CONFIG_FILE')
-    if config_file:
-        config = ConfigurationHandler(config_file)
-        config.setup()
-        
-        return config
+class ProducerClient:
+    def __init__(self):
+        self.socket_handler: Optional[CoinBaseHandler] = None
+        self.vwap_calculator: Optional[VWAPCalculator] = None
+        self.kafka_handler: Optional[ProducerHandler] = None
 
-    logging.error("CONFIG_FILE environment variable is not defined.")
+    def initialize(self, configuration: ConfigurationHandler):
+        self.socket_handler = configuration.initialize_websocket(self.callback)
+        self.vwap_calculator = configuration.initialize_vwap()
+        self.kafka_handler = configuration.setup_brokers()
 
+    def callback(self, message: dict):
+        logging.debug("creating product")
+        product = Product(message)
+        logging.debug("computing vwap")
+        new_vwap = self.vwap_calculator.calculate_vwap(product)
 
-def start_producer(config: ConfigurationHandler):
-    client = ProducerClient()
-    client.initialize(config)
-    client.produce()
+        logging.debug("checking kafka")
+        if self.kafka_handler is not None:
+            logging.debug("sending kafka message")
+            self.kafka_handler.send_message(product.id, new_vwap)
+
+        logging.info(f"[{product.id}] {new_vwap}")
+
+    def produce(self):
+        self.socket_handler.connect()
 
 
 def main():
-    config = get_configuration()
+    config_file = os.environ.get('CONFIG_FILE')
+    is_local = bool(os.environ.get('LOCAL_RUN', False))
+
+    config = get_configuration(config_file, is_local)
     if config:
-        start_producer(config)
+        client = ProducerClient()
+        client.initialize(config)
+        client.produce()
 
 
 if __name__ == "__main__":

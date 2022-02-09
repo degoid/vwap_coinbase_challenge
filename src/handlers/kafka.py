@@ -7,7 +7,7 @@ from kafka import KafkaProducer
 from kafka.errors import KafkaError
 
 MAX_RETRIES = 3
-TIME_TO_WAIT = 5
+TIME_TO_WAIT = 2
 CLIENT_ID = 'vwap'
 
 

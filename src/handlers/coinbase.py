@@ -2,7 +2,6 @@ import json
 import logging
 from typing import Callable
 
-import websocket
 from websocket import WebSocketApp
 
 
@@ -12,10 +11,8 @@ class CoinBaseHandler:
         self.products = products
         self.callback = callback
 
-    def connect(self):
-        logging.info("Connecting to Coinbase...")
-
-        ws = websocket.WebSocketApp(
+    def get_websocket(self) -> WebSocketApp:
+        return WebSocketApp(
             self.url,
             on_open=self._connection_opened,
             on_message=self._new_message,
@@ -23,6 +20,9 @@ class CoinBaseHandler:
             on_close=self._on_close
         )
 
+    def connect(self):
+        logging.info("Connecting to Coinbase...")
+        ws = self.get_websocket()
         ws.run_forever()
 
     def _connection_opened(self, ws: WebSocketApp):

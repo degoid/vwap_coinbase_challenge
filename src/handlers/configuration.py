@@ -19,9 +19,10 @@ class Configuration:
 
 
 class ConfigurationHandler:
-    def __init__(self, file_path: str):
+    def __init__(self, file_path: str, is_local: bool = False):
         self.file_path = file_path
         self.configuration = None
+        self.is_local = is_local
 
     def _open_config(self) -> dict:
         f = open(self.file_path)
@@ -35,8 +36,10 @@ class ConfigurationHandler:
 
     def setup_brokers(self) -> Optional[ProducerHandler]:
         brokers_json = self.configuration.brokers
-        if brokers_json is not None:
-            sleep(self.configuration.kafka_time)
+        if brokers_json is not None and len(brokers_json.keys()) > 0:
+            if self.is_local:
+                sleep(self.configuration.kafka_time)
+
             return ProducerHandler(brokers_json)
 
         return None
@@ -59,7 +62,6 @@ class ConfigurationHandler:
         products = self.configuration.products
 
         if url == '' or products is None:
-            logging.error(f"Coinbase url must not be empty and at least one product must be provided.")
-            exit(1)
+            raise ValueError("Coinbase url must not be empty and at least one product must be provided.")
 
         return CoinBaseHandler(url, products, callback)
