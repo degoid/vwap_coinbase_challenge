@@ -24,7 +24,8 @@ TODO
 
 ## Setup
 
-The only thing that needs to be installed before running the code are the following dependencies [websocket-client, kafka, pytest, pytest-cov]
+The only thing that needs to be installed before running the code are the following dependencies 
+- [websocket-client, kafka, pytest, pytest-cov]
 
 Run this command (using python version +3.5) `pip install -r setup/requirements.txt` 
 
