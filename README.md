@@ -123,7 +123,7 @@ And then, run this command (using python version +3.5)
 
 Running the following command, you'll see the tests output's result:
 
-`python -m pytest --cov-report term-missing --cov=src`
+- `python -m pytest --cov-report term-missing --cov=src`
+- Or `make test`
 
-Or `make test`
 ![coverage_report.png](documentation/coverage_report.png)
