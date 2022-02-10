@@ -3,8 +3,9 @@ import logging
 from time import sleep
 from typing import Optional, Callable
 
-from src.handlers.coinbase import CoinBaseHandler
+from src.handlers.websocket.coinbase import CoinBaseHandler
 from src.handlers.kafka import ProducerHandler
+from src.handlers.websocket.web_socket_handler import WebSocketHandler
 from src.products.calculator import VWAPCalculator
 
 
@@ -12,13 +13,16 @@ class Configuration:
     def __init__(self, config: dict):
         self.max_size = config.get("max_size")
         self.brokers = config.get("brokers", None)
-        self.coinbase_url = config.get("coinbase_url")
+        self.ws_url = config.get("ws_url")
         self.log_level = config.get("log_level")
         self.products = config.get("products")
         self.kafka_time = config.get("kafka_time", None)
 
 
 class ConfigurationHandler:
+    """
+    Helper class to handle with all initializations
+    """
     def __init__(self, file_path: str, is_local: bool = False):
         self.file_path = file_path
         self.configuration = None
@@ -57,11 +61,11 @@ class ConfigurationHandler:
         max_size = int(self.configuration.max_size)
         return VWAPCalculator(max_size)
 
-    def initialize_websocket(self, callback: Callable) -> CoinBaseHandler:
-        url = self.configuration.coinbase_url
+    def initialize_websocket(self, callback: Callable) -> WebSocketHandler:
+        url = self.configuration.ws_url
         products = self.configuration.products
 
         if url == '' or products is None:
-            raise ValueError("Coinbase url must not be empty and at least one product must be provided.")
+            raise ValueError("WS URL cannot be empty and at least one product must be provided.")
 
         return CoinBaseHandler(url, products, callback)

@@ -13,7 +13,7 @@ def test_setup_initializations(producer_handler):
 
     config_dict = config._open_config()
 
-    assert config_dict['coinbase_url'] == 'wss://url'
+    assert config_dict['ws_url'] == 'wss://url'
     assert config_dict['kafka_time'] == 1
 
     config.setup()

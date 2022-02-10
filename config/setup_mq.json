@@ -1,5 +1,5 @@
 {
-  "coinbase_url": "wss://ws-feed.pro.coinbase.com",
+  "ws_url": "wss://ws-feed.pro.coinbase.com",
   "max_size": 200,
   "products": ["ETH-BTC", "ETH-USD", "BTC-USD"],
   "brokers": {

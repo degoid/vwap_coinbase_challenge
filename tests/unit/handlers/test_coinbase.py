@@ -1,7 +1,5 @@
-import pytest
-
-from src.handlers.coinbase import CoinBaseHandler
-from unittest.mock import MagicMock, patch
+from src.handlers.websocket.coinbase import CoinBaseHandler
+from unittest.mock import MagicMock
 
 URL = 'localhost'
 PORT = 8765

@@ -3,6 +3,7 @@ version: '3.8'
 services:
   coinbase-wmq:
     build: .
+    container_name: producer
     environment:
       - CONFIG_FILE=./app/config/setup_mq.json
       - LOCAL_RUN=1

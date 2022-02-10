@@ -1,5 +1,5 @@
 {
-  "coinbase_url": "wss://url",
+  "ws_url": "wss://url",
   "max_size": 20,
   "products": ["p1", "p2", "p3"],
   "brokers": {

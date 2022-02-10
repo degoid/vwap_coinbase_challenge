@@ -1,29 +1,15 @@
 import json
 import logging
-from typing import Callable
 
 from websocket import WebSocketApp
 
+from src.handlers.websocket.web_socket_handler import WebSocketHandler
 
-class CoinBaseHandler:
-    def __init__(self, url: str, products: list, callback: Callable):
-        self.url = url
-        self.products = products
-        self.callback = callback
 
-    def get_websocket(self) -> WebSocketApp:
-        return WebSocketApp(
-            self.url,
-            on_open=self._connection_opened,
-            on_message=self._new_message,
-            on_error=self._on_error,
-            on_close=self._on_close
-        )
-
-    def connect(self):
-        logging.info("Connecting to Coinbase...")
-        ws = self.get_websocket()
-        ws.run_forever()
+class CoinBaseHandler(WebSocketHandler):
+    """
+    Responsible for all the Coinbase WebSccket associated logic
+    """
 
     def _connection_opened(self, ws: WebSocketApp):
         logging.info("Sending subscription message...")
@@ -58,11 +44,3 @@ class CoinBaseHandler:
             return
 
         logging.info('Message ignored: ' + str(message))
-
-    @staticmethod
-    def _on_error(*kwargs):
-        logging.error(f"Error:{kwargs[1:]}")
-
-    @staticmethod
-    def _on_close(*kwargs):
-        logging.warning(f"Websocket closed [{kwargs[1:]}]")

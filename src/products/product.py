@@ -1,4 +1,6 @@
+import logging
 from decimal import Decimal
+from typing import Optional
 
 
 class Product:
@@ -9,11 +11,15 @@ class Product:
 
 
 class WeightedAverageProduct:
+    """
+    All the logic associated with the computation of Volume Weighted Average Price
+    """
     def __init__(self, size: int):
         self.size = size
         self.weighted_list = []
         self.weights_list = []
 
+        # These variables will be used to improve the computation avoiding the iteration over the previous lists
         self._sum_values = Decimal(0)
         self._sum_weight = Decimal(0)
 
@@ -21,6 +27,7 @@ class WeightedAverageProduct:
         value = Decimal(0)
         weight = Decimal(0)
 
+        # If the list is completed, we need to remove the older value and free one slot for the new one
         if len(self.weighted_list) == self.size and self.size > 0:
             value = self.weighted_list[0]
             self.weighted_list = self.weighted_list[1:]
@@ -30,12 +37,16 @@ class WeightedAverageProduct:
 
         return value, weight
 
-    def _add_new_weighted_value(self, value: Decimal, weight: Decimal) -> Decimal:
-        new_entry = Decimal(value) * Decimal(weight)
-        self.weighted_list.append(new_entry)
-        self.weights_list.append(weight)
+    def _add_new_weighted_value(self, value: Decimal, weight: Decimal) -> Optional[Decimal]:
+        if len(self.weighted_list) < self.size:
+            new_entry = Decimal(value) * Decimal(weight)
+            self.weighted_list.append(new_entry)
+            self.weights_list.append(weight)
 
-        return new_entry
+            return new_entry
+        else:
+            logging.error("There's no more space to add new values")
+            return None
 
     def update(self, value: Decimal, new_weight: Decimal):
         if self.size > 0:
@@ -47,7 +58,7 @@ class WeightedAverageProduct:
             self._sum_weight = self._sum_weight - old_weight + new_weight
 
     def avg(self):
-        if self._sum_weight > 0:
+        if self._sum_weight > 0:  # Avoiding division by zero
             return self._sum_values / self._sum_weight
 
         return 0

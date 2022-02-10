@@ -8,7 +8,11 @@ class VWAPCalculator:
         self.products = {}
         self.max_size = max_size
 
-    def _get_product(self, product: Product):
+    def _get_product(self, product: Product) -> WeightedAverageProduct:
+        """
+        Looks for the correct Weigthed Average Product,
+        if it doesn't exist, this method will create a new one and add it to the self.products dict.
+        """
         product_wa = self.products.get(product.id)
 
         if product_wa is None:
@@ -18,6 +22,9 @@ class VWAPCalculator:
         return product_wa
 
     def calculate_vwap(self, product: Product) -> Decimal:
+        """
+        Calculate the new average of the weighted average product
+        """
         product_wa = self._get_product(product)
         product_wa.update(product.value, product.weight)
 

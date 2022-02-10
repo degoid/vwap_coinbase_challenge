@@ -1,5 +1,5 @@
 {
-  "coinbase_url": "",
+  "ws_url": "",
   "max_size": 20,
   "products": [],
   "brokers": {
