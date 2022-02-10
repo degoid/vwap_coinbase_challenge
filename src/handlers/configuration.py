@@ -3,8 +3,9 @@ import logging
 from time import sleep
 from typing import Optional, Callable
 
+from src.handlers.messages.message_handler import MessageHandler
 from src.handlers.websocket.coinbase import CoinBaseHandler
-from src.handlers.kafka import ProducerHandler
+from src.handlers.messages.kafka import KafkaHandler
 from src.handlers.websocket.web_socket_handler import WebSocketHandler
 from src.products.calculator import VWAPCalculator
 
@@ -38,13 +39,13 @@ class ConfigurationHandler:
 
         self._setup_logger()
 
-    def setup_brokers(self) -> Optional[ProducerHandler]:
+    def setup_brokers(self) -> Optional[MessageHandler]:
         brokers_json = self.configuration.brokers
         if brokers_json is not None and len(brokers_json.keys()) > 0:
             if self.is_local:
                 sleep(self.configuration.kafka_time)
 
-            return ProducerHandler(brokers_json)
+            return KafkaHandler(brokers_json)
 
         return None
 

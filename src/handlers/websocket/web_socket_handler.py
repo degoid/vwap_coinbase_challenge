@@ -27,7 +27,7 @@ class WebSocketHandler:
 
     @staticmethod
     def _on_error(*kwargs):
-        logging.error(f"Error:{kwargs[1:]}")
+        logging.error(f"WebSocket unexpected error: {kwargs[1:]}")
 
     @staticmethod
     def _on_close(*kwargs):

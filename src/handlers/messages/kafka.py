@@ -6,6 +6,8 @@ from typing import List, Optional
 from kafka import KafkaProducer
 from kafka.errors import KafkaError
 
+from src.handlers.messages.message_handler import MessageHandler
+
 MAX_RETRIES = 3
 TIME_TO_WAIT = 2
 CLIENT_ID = 'vwap'
@@ -21,7 +23,7 @@ class BrokerMap:
         self.producer = producer
 
 
-class ProducerHandler:
+class KafkaHandler(MessageHandler):
     """
     This class will initialize each producer and handle with the message production to notify each consumer by topic
     """

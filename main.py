@@ -4,7 +4,7 @@ from typing import Optional
 
 from src.handlers.websocket.coinbase import CoinBaseHandler
 from src.handlers.configuration import ConfigurationHandler
-from src.handlers.kafka import ProducerHandler
+from src.handlers.messages.kafka import KafkaHandler
 from src.products.calculator import VWAPCalculator
 from src.products.product import Product
 from src.utils.config_utils import get_configuration
@@ -18,7 +18,7 @@ class ProducerClient:
     def __init__(self):
         self.socket_handler: Optional[CoinBaseHandler] = None
         self.vwap_calculator: Optional[VWAPCalculator] = None
-        self.kafka_handler: Optional[ProducerHandler] = None
+        self.kafka_handler: Optional[KafkaHandler] = None
 
     def initialize(self, configuration: ConfigurationHandler):
         self.socket_handler = configuration.initialize_websocket(self.callback)

@@ -6,7 +6,7 @@ from src.handlers.configuration import ConfigurationHandler
 import os
 
 
-@patch("src.handlers.configuration.ProducerHandler")
+@patch("src.handlers.configuration.KafkaHandler")
 def test_setup_initializations(producer_handler):
     producer_handler._create_kafka_producer = MagicMock()
     config = ConfigurationHandler(os.getcwd() + "/config/test_setup.json")
