@@ -1,11 +1,13 @@
-setup_env:
-	export CONFIG_FILE=$(PWD)/config/setup_no_mq.json
-	pip install -r setup/requirements.txt
+.EXPORT_ALL_VARIABLES:
+CONFIG_FILE = $(PWD)/config/setup_no_mq.json
 
-run_consumer: setup_env ## Initialize a consumer service to receive messages from topic --topic
+setup_env:
+	@pip install -r setup/requirements.txt
+
+run_consumer: ## Initialize a consumer service to receive messages from topic --topic
 	python consumer.py --topic=$(topic)
 
-run_producer: setup_env
+run_producer: ## Initialize a listener service to receive messages from web socket
 	python main.py
 
 kafka_cluster:

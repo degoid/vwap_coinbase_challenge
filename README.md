@@ -49,7 +49,6 @@ a different approach), this architecture allows these changes with low effort (c
 - If disconnections frequently occur, implement a retry system to ensure the availability
 - If the throughput of each product increases over time, another approach could be necessary to deal with a higher traffic
   - A possible alternative could be using a specific service for each subscription product
-- Adapt logger format
 - Use a lint to standardize the code
 - Optimize Kafka cluster's configurations
 - Revalidate and complement tests

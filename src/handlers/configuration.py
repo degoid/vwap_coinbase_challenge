@@ -56,7 +56,7 @@ class ConfigurationHandler:
         if not isinstance(numeric_level, int):
             raise ValueError(f'Invalid log level: {log_level}')
 
-        logging.basicConfig(level=numeric_level)
+        logging.basicConfig(level=numeric_level, format="%(asctime)s - %(process)s - %(levelname)s: %(message)s")
 
     def initialize_vwap(self) -> VWAPCalculator:
         max_size = int(self.configuration.max_size)
